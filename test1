@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulario de contacto para nuevos leads">
+    <title>Formulario de Contacto | Tu Empresa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+            --text-color: #1f2937;
+            --bg-color: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--text-color);
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        input.error {
+            border-color: var(--error-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            color: var(--success-color);
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="header">
+            <h1>Contáctanos</h1>
+            <p>Completa el formulario y nos pondremos en contacto contigo</p>
+        </div>
+        <form id="leadForm" novalidate>
+            <div class="form-group">
+                <label for="name">Nombre completo</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required 
+                        minlength="3"
+                        placeholder="Ej: Juan Pérez"
+                    >
+                </div>
+                <span class="error-message" id="nameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        placeholder="ejemplo@correo.com"
+                    >
+                </div>
+                <span class="error-message" id="emailError"></span>
+            </div>
+            <button type="submit" id="submitButton">
+                <span>Enviar</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+        </form>
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> ¡Gracias por contactarnos! Te responderemos pronto.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('leadForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const submitButton = document.getElementById('submitButton');
+            const spinner = document.getElementById('spinner');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Función para validar email
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Función para mostrar error
+            function showError(input, message) {
+                const errorElement = document.getElementById(`${input.id}Error`);
+                input.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+
+            // Función para limpiar error
+            function clearError(input) {
+                const errorElement = document.getElementById(`${input.id}Error`);
+                input.classList.remove('error');
+                errorElement.style.display = 'none';
+            }
+
+            // Validación en tiempo real
+            nameInput.addEventListener('input', function() {
+                if (this.value.length < 3) {
+                    showError(this, 'El nombre debe tener al menos 3 caracteres');
+                } else {
+                    clearError(this);
+                }
+            });
+
+            emailInput.addEventListener('input', function() {
+                if (!isValidEmail(this.value)) {
+                    showError(this, 'Por favor, ingresa un correo electrónico válido');
+                } else {
+                    clearError(this);
+                }
+            });
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validación al enviar
+                let isValid = true;
+
+                if (nameInput.value.length < 3) {
+                    showError(nameInput, 'El nombre debe tener al menos 3 caracteres');
+                    isValid = false;
+                }
+
+                if (!isValidEmail(emailInput.value)) {
+                    showError(emailInput, 'Por favor, ingresa un correo electrónico válido');
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Simular envío al servidor
+                try {
+                    submitButton.disabled = true;
+                    spinner.style.display = 'block';
+                    
+                    // Simular delay de red
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    const formData = {
+                        name: nameInput.value,
+                        email: emailInput.value,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    console.log('Datos del lead:', formData);
+                    
+                    // Mostrar mensaje de éxito
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+
+                } catch (error) {
+                    alert('Hubo un error al enviar el formulario. Por favor, intenta nuevamente.');
+                    console.error('Error:', error);
+                } finally {
+                    submitButton.disabled = false;
+                    spinner.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
