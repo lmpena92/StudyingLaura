@@ -1,0 +1,40 @@
+// ... existing code ...
+<style>
+    :root {
+        --primary-color: #ec4899;          /* Pink primary */
+        --primary-hover: #db2777;          /* Darker pink for hover */
+        --error-color: #dc2626;
+        --success-color: #16a34a;
+        --text-color: #1f2937;
+        --bg-color: #fdf2f8;               /* Light pink background */
+    }
+
+    /* ... existing styles ... */
+
+    .form-container {
+        background-color: white;
+        padding: 2.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.1), 
+                    0 2px 4px -2px rgba(236, 72, 153, 0.1);
+        width: 100%;
+        max-width: 480px;
+    }
+
+    /* Update button styles for pink theme */
+    button {
+        background-color: var(--primary-color);
+        /* ... rest of button styles remain the same ... */
+    }
+
+    button:hover {
+        background-color: var(--primary-hover);
+    }
+
+    input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    }
+    /* ... rest of existing styles ... */
+</style>
+// ... rest of existing code ...
