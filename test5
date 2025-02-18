@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ... existing head content ... -->
+    <style>
+        :root {
+            --primary-color: #ec4899;
+            --primary-hover: #db2777;
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+            --text-color: #1f2937;
+            --bg-color: #fdf2f8;
+        }
+
+        /* Ensure the pink background covers the entire viewport */
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #fdf2f8 !important; /* Force pink background */
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        /* ... rest of existing styles ... */
+    </style>
+</head>
+<!-- ... rest of existing code ... -->
